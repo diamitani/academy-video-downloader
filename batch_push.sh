@@ -11,7 +11,10 @@ BATCH_SIZE=3
 cd "$REPO_DIR"
 
 echo "Listing videos from Drive..."
-mapfile -t FILES < <(rclone lsf "gdrive:$DRIVE_PATH" --recursive --files-only 2>/dev/null | sort)
+FILES=()
+while IFS= read -r line; do
+    FILES+=("$line")
+done < <(rclone lsf "gdrive:$DRIVE_PATH" --recursive --files-only 2>/dev/null | sort)
 
 TOTAL=${#FILES[@]}
 echo "Found $TOTAL videos"
